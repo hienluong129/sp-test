@@ -1,0 +1,21 @@
+{
+    "downloadAppPopup": ".modal-box",
+    "closeDownloadAppPopup": ".fas",
+    "header": ".navbar",
+    "banner": ".homepage_banner",
+    "popularSection": ".pt-6",
+    "adBanner": ".banner-home__top",
+    "monthTrendingTitle": ".trending-title",
+    "monthTrendingSection": "#trending-carousel > .ng-tns-c69-0",
+    "feeds": ".card-gallery",
+    "categoty": "#sidebar-wrapper > .column > div.ng-star-inserted",
+    "formRegister": "#hs-form-iframe-0",
+    "paging": ".pagination",
+    "footer": ".footer",
+    "btnCreatePost": ".homepage_banner_content > .flex > .button",
+    "btnSavePopular": ".editor-pick > :nth-child(1) svg",
+    "btnSaveinMonthPost": ".trending-card > spiderum-card-demo svg",
+    "btnSaveinMainContent": "spiderum-card-demo.ng-star-inserted > .card svg"
+
+
+}

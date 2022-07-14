@@ -15,7 +15,15 @@
     "btnCreatePost": ".homepage_banner_content > .flex > .button",
     "btnSavePopular": ".editor-pick > :nth-child(1) svg",
     "btnSaveinMonthPost": ".trending-card > spiderum-card-demo svg",
-    "btnSaveinMainContent": "spiderum-card-demo.ng-star-inserted > .card svg"
-
+    "btnSaveinMainContent": "spiderum-card-demo.ng-star-inserted > .card svg",
+    "postTitleonPopular":".editor-pick > :nth-child(1) h2",
+    "postTitleonMonthTrending": "#trending-carousel h2",
+    "postTitleonForyou": "spiderum-card-demo.ng-star-inserted h2",
+    "authorAvatar": ".editor-pick avatar",
+    "authorName": ".card-details a",
+    "authorAvatarinMonthTrending": "#trending-carousel avatar",
+    "authorNameinMonthTrending": "#trending-carousel .card-author > a",
+    "authorNameinForyou": "spiderum-card-demo.ng-star-inserted .card-author a",
+    "top10": ".trending-top-post_link"
 
 }

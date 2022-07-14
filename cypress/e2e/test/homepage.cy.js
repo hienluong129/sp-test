@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 import * as pageObject from '../../fixtures/homepage/home-page-object.json';
+import * as postDetailObject from '../../fixtures/postdetail/post-detail-page-object.json';
+import * as userDetailObject from '../../fixtures/userdetail/user-detail-object.json';
 import * as data from '../../fixtures/testData.json';
 beforeEach(function () {
   cy.viewport('macbook-15')     
@@ -51,7 +53,7 @@ describe('2. Home page for non logged in user', () => {
     cy.get(pageObject.footer).compareSnapshotTest('2.8.homepage-footer',false,false)
   })
 })
-describe.only('3. Non logged in user action in Homepage', () => {
+describe('3. Non logged in user action in Homepage', () => {
   beforeEach(function () {
     cy.visit(data.testURL.homepage);
     cy.handleDownloadAppPopup();  
@@ -65,7 +67,7 @@ describe.only('3. Non logged in user action in Homepage', () => {
     cy.checkURL(data.testURL.loginURL);
   })
   it('3.3. Non logged in user click on save post in monthly post ', () => {
-    cy.get(pageObject.btnSaveinMonthPost).click()
+    cy.get(pageObject.btnSaveinMonthPost).first().click()
     cy.checkURL(data.testURL.loginURL);
   })
   it('3.4. Non logged in user click on save post in main content', () => {
@@ -76,14 +78,99 @@ describe.only('3. Non logged in user action in Homepage', () => {
     cy.get(pageObject.btnSaveinMainContent).eq(1).click()
     cy.checkURL(data.testURL.loginURL)
   })
-  it('3.6. Non logged in user clic on comment icon', () => {
+  it('3.6. Non logged in user click on comment icon', () => {
     cy.get(pageObject.btnSaveinMainContent).eq(2).click()
     cy.checkURL('#comments')
   })
  
 })
-    
-    
+describe('4. Non logged in user is able to view post detail', () => {
+  beforeEach(function () {
+    cy.visit(data.testURL.homepage);
+    cy.handleDownloadAppPopup();  
+  })
+  it('4.1. Non logged in user click on a post in Popular section', () => {
+    cy.get(pageObject.postTitleonPopular).invoke('text').then(text => {
+      cy.wrap(text).as('postTitle');
+      })
+    cy.get(pageObject.postTitleonPopular).click()
+    cy.checkURL('bai-dang');
+    cy.get('@postTitle').then(postTitle => {
+        cy.get(postDetailObject.postTitle).should('include.text', postTitle);
+    })
+  })
+  it('4.2. Non logged in user click on a post in month trending section', () => {
+    cy.get(pageObject.postTitleonMonthTrending).eq(1).invoke('text').then(text => {
+      cy.wrap(text).as('postTitle');
+      })
+    cy.get(pageObject.postTitleonMonthTrending).eq(1).click()
+    cy.checkURL('bai-dang');
+    cy.get('@postTitle').then(postTitle => {
+        cy.get(postDetailObject.postTitle).should('include.text', postTitle);
+    })
+  })
+  it('4.3. Non logged in user click on a post in for you section', () => {
+    cy.get(pageObject.postTitleonForyou).invoke('text').then(text => {
+      cy.wrap(text.trim()).as('postTitle');
+      })
+    cy.get(pageObject.postTitleonForyou).click({force: true})
+    cy.checkURL('bai-dang');
+    cy.get('@postTitle').then(postTitle => {
+        cy.get(postDetailObject.postTitle).should('include.text', postTitle);
+    })
+  })
+})
+describe('5. Non logged in user is able to view author', () => {
+  beforeEach(function () {
+    cy.visit(data.testURL.homepage);
+    cy.handleDownloadAppPopup();  
+  })
+  it('5.1. Non logged in user click on author name in popular', () => {
+    cy.get(pageObject.authorName).first().invoke('text').then(text => {
+      cy.wrap(text.trim()).as('authorName');
+      })
+    cy.get(pageObject.authorName).first().click()
+    cy.checkURL('nguoi-dung');
+    cy.wait(1500)
+    cy.get('@authorName').then(authorName => {
+        cy.get(userDetailObject.userName).invoke('text').then((text) => text.trim()).should("equal", authorName);
+    })
+  })
+  it('5.2. Non logged in user click on author name in month trending', () => {
+    cy.get(pageObject.authorNameinMonthTrending).first().invoke('text').then(text => {
+      cy.wrap(text.trim()).as('authorName');
+      })
+    cy.get(pageObject.authorNameinMonthTrending).first().click()
+    cy.checkURL('nguoi-dung');
+    cy.wait(1500)
+    cy.get('@authorName').then(authorName => {
+        cy.get(userDetailObject.userName).invoke('text').then((text) => text.trim()).should("equal", authorName);
+    })
+  })
+  it('5.3. Non logged in user click on author name in for your', () => {
+    cy.get(pageObject.authorNameinForyou).first().invoke('text').then(text => {
+      cy.wrap(text.trim()).as('authorName');
+      })
+    cy.get(pageObject.authorNameinForyou).first().click()
+    cy.checkURL('nguoi-dung');
+    cy.wait(1500)
+    cy.get('@authorName').then(authorName => {
+        cy.get(userDetailObject.userName).invoke('text').then((text) => text.trim()).should("equal", authorName);
+    })
+  })
+})
+describe('6. Non logged in user is able to view top 10', () => {
+  beforeEach(function () {
+    cy.visit(data.testURL.homepage);
+    cy.handleDownloadAppPopup();  
+  })
+  it('6.1. Non logged in user click on top 10 section', () => {
+   cy.get(pageObject.top10).first().click();
+   cy.checkURL('top-bai-viet');
+   cy.get(postDetailObject.top10).invoke('text').then((text) => text.trim()).should("equal", '#TOP 10 BÀI VIẾT NỔI BẬT');
+  })
+ 
+})
     
     
 

@@ -38,6 +38,7 @@
     "fsevents": "2.1.2"
   },
   "dependencies": {
-    "chai-sorted": "^0.2.0"
+    "chai-sorted": "^0.2.0",
+    "lodash": "^4.17.21"
   }
 }

@@ -1,8 +1,12 @@
 /// <reference types="cypress" />
+///<reference types="cypress-iframe" />
+import 'cypress-iframe';
 import * as pageObject from '../../fixtures/homepage/home-page-object.json';
 import * as postDetailObject from '../../fixtures/postdetail/post-detail-page-object.json';
 import * as userDetailObject from '../../fixtures/userdetail/user-detail-object.json';
+import * as categoryPageObject from '../../fixtures/categorypage/category-page-object.json';
 import * as data from '../../fixtures/testData.json';
+import { eq, last } from 'lodash';
 beforeEach(function () {
   cy.viewport('macbook-15')     
 })
@@ -91,7 +95,7 @@ describe('4. Non logged in user is able to view post detail', () => {
   })
   it('4.1. Non logged in user click on a post in Popular section', () => {
     cy.get(pageObject.postTitleonPopular).invoke('text').then(text => {
-      cy.wrap(text).as('postTitle');
+      cy.wrap(text.replace('...', '').trim()).as('postTitle');
       })
     cy.get(pageObject.postTitleonPopular).click()
     cy.checkURL('bai-dang');
@@ -101,7 +105,7 @@ describe('4. Non logged in user is able to view post detail', () => {
   })
   it('4.2. Non logged in user click on a post in month trending section', () => {
     cy.get(pageObject.postTitleonMonthTrending).eq(1).invoke('text').then(text => {
-      cy.wrap(text).as('postTitle');
+      cy.wrap(text.replace('...', '').trim()).as('postTitle');
       })
     cy.get(pageObject.postTitleonMonthTrending).eq(1).click()
     cy.checkURL('bai-dang');
@@ -111,7 +115,7 @@ describe('4. Non logged in user is able to view post detail', () => {
   })
   it('4.3. Non logged in user click on a post in for you section', () => {
     cy.get(pageObject.postTitleonForyou).invoke('text').then(text => {
-      cy.wrap(text.trim()).as('postTitle');
+      cy.wrap(text.replace('...', '').trim()).as('postTitle');
       })
     cy.get(pageObject.postTitleonForyou).click({force: true})
     cy.checkURL('bai-dang');
@@ -160,17 +164,58 @@ describe('5. Non logged in user is able to view author', () => {
   })
 })
 describe('6. Non logged in user is able to view top 10', () => {
+  it('6.1. Non logged in user click on top 10 section', () => {
+  cy.visit(data.testURL.homepage);
+  cy.handleDownloadAppPopup();  
+  cy.get(pageObject.top10).first().click();
+  cy.checkURL('top-bai-viet');
+  cy.get(postDetailObject.top10).invoke('text').then((text) => text.trim()).should("equal", '#TOP 10 BÀI VIẾT NỔI BẬT');
+  })
+ 
+})
+describe('7. Verify the paging', () => {
   beforeEach(function () {
     cy.visit(data.testURL.homepage);
     cy.handleDownloadAppPopup();  
   })
-  it('6.1. Non logged in user click on top 10 section', () => {
-   cy.get(pageObject.top10).first().click();
-   cy.checkURL('top-bai-viet');
-   cy.get(postDetailObject.top10).invoke('text').then((text) => text.trim()).should("equal", '#TOP 10 BÀI VIẾT NỔI BẬT');
+  it('7.1. Non logged in user click on a page in for you section', () => {
+    cy.get(pageObject.page).then($page => {
+            
+      for (let i = 0; i < $page.length; i++) {  
+          cy.wrap($page[i]).click();
+          cy.checkURL('page_idx='+(i+1))
+      }
   })
- 
+  })
+  it('7.2. Non logged in user click on a top post and do the paging', () => {
+    cy.get(pageObject.topPost).click();
+    cy.checkURL('sort=top')
+    cy.get(pageObject.page).then($page => {
+            
+      for (let i = 0; i < $page.length; i++) {  
+          cy.wrap($page[i]).click();
+          cy.checkURL('page_idx='+(i+1))
+      }
+  })
+  })
 })
-    
-    
-
+describe('8. Non user select a category', () => {
+  it('8.1. Non logged in user click on a category', () => {
+    cy.visit(data.testURL.homepage);
+    cy.handleDownloadAppPopup();  
+    cy.get(pageObject.categoryItem).then($category => {
+            
+      for (let i = 0; i < $category.length; i++) {  
+        cy.get(pageObject.categoryItem).eq(i).invoke('text').then(text => {
+          cy.wrap(text.trim()).as('categoryname');
+          })
+        cy.get(pageObject.categoryItem).eq(i).click({force:true});
+        cy.checkURL('danh-muc');
+        cy.get('@categoryname').then(categoryname => {
+          cy.get(categoryPageObject.categoryTitle,{ timeout: 10000 }).invoke('text').then((text) => text.trim()).should("equal", categoryname);
+        })
+        cy.get(categoryPageObject.spiderumicon).click();
+      }
+  })
+  })
+})

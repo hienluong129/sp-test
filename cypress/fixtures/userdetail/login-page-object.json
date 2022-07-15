@@ -1,0 +1,8 @@
+{
+    "name": "#name",
+    "pass": "#password",
+    "loginBtn": "#submit-btn",
+    "loginWithFB": "#fb-signup-btn",
+    "forgotpass": ":nth-child(6) > :nth-child(1) > a",
+    "register": ":nth-child(2) > a"
+}

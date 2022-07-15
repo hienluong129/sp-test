@@ -24,6 +24,18 @@
     "authorAvatarinMonthTrending": "#trending-carousel avatar",
     "authorNameinMonthTrending": "#trending-carousel .card-author > a",
     "authorNameinForyou": "spiderum-card-demo.ng-star-inserted .card-author a",
-    "top10": ".trending-top-post_link"
+    "top10": ".trending-top-post_link",
+    "page": ".page",
+    "topPost": "#filter-bar >:nth-child(2) span",
+    "newPost": "#filter-bar >:nth-child(3) span",
+    "moreOption": "#filter-bar > .ml-auto",
+    "hotPost":"[aria-label='Filter hot posts']",
+    "categoryItem": "sidebar-wrapper a",
+    "ntmnformiframe": ".hs-form-iframe",
+    "loginBtn": ".button > .text",
+    "skipGuide": "[style='display: flex;'] > .walkthrough-top button",
+    "topAuthor": "#sidebar-wrapper > .column > :nth-child(1) > :nth-child(1)",
+    "specialPost": ".column > :nth-child(1) > :nth-child(2)",
+    "guide":".column > :nth-child(1) > :nth-child(3)"
 
 }

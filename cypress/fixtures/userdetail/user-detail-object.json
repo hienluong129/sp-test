@@ -1,3 +1,6 @@
 {
-    "userName": ".display-nam a"
+    "userName": ".display-nam a",
+    "savedPostTitle": "h1.title",
+    "main":"#main"
+
 }

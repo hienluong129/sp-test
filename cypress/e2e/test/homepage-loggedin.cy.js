@@ -96,7 +96,7 @@ beforeEach(function () {
    
   })
   describe('5. Verify the paging', () => {
-    it.only('5.1. Logged in user click on a page in for you section', () => {
+    it('5.1. Logged in user click on a page in for you section', () => {
       cy.get(pageObject.page).then($page => {
               
         for (let i = 0; i < $page.length; i++) {  
@@ -105,7 +105,7 @@ beforeEach(function () {
         }
     })
     })
-    it.only('5.2. Logged in user click on author section', () => {
+    it('5.2. Logged in user click on author section', () => {
       cy.get(pageObject.topPost).click();
       cy.checkURL('sort=follow')
       cy.get(pageObject.page).then($page => {
@@ -116,7 +116,7 @@ beforeEach(function () {
         }
     })
     })
-    it.only('5.3. Logged in user click on latest section', () => {
+    it('5.3. Logged in user click on latest section', () => {
         cy.get(pageObject.newPost).click();
         cy.checkURL('sort=new')
         cy.get(pageObject.page).then($page => {
@@ -127,9 +127,9 @@ beforeEach(function () {
           }
       })
       })
-      it.only('5.4. Logged in user select filter by controversial', () => {
+      it('5.4. Logged in user select filter by controversial', () => {
         cy.get(pageObject.moreOption).click();
-        cy.get(pageObject.option).eq(0).click();
+        cy.get(pageObject.hotPost).click();
         cy.checkURL('sort=controversial')
         cy.get(pageObject.page).then($page => {
                 
@@ -139,9 +139,9 @@ beforeEach(function () {
           }
       })
       })
-      it.only('5.5. Logged in user select filter by old', () => {
+      it('5.5. Logged in user select filter by old', () => {
         cy.get(pageObject.moreOption).click();
-        cy.get(pageObject.hotPost).click();
+        cy.get(pageObject.oldbutgold).click();
         cy.checkURL('sort=old')
         cy.get(pageObject.page).then($page => {
                 
@@ -151,10 +151,10 @@ beforeEach(function () {
           }
       })
       })
-      it.only('5.6. Logged in user select filter by old', () => {
+      it('5.6. Logged in user select filter by old', () => {
         cy.get(pageObject.moreOption).click();
-        cy.get(pageObject.hotPost).click();
-        cy.checkURL('sort=old')
+        cy.get(pageObject.top).click();
+        cy.checkURL('sort=top')
         cy.get(pageObject.page).then($page => {
                 
           for (let i = 0; i < $page.length; i++) {  
@@ -163,4 +163,76 @@ beforeEach(function () {
           }
       })
       })
+  })
+  describe('6. Logged in user is able to view more top authors', () => {
+    it('6.1. Logged in user click on more authors', () => {
+    cy.get(pageObject.moreAuthors).click();
+    cy.checkURL('thanh-vien-noi-bat');
+    cy.get(postDetailObject.topAuthorsTitle).invoke('text').then((text) => text.trim()).should("equal", 'THÀNH VIÊN NỔI BẬT');
+    })
+   
+  })
+  describe('7. Logged in user is able to view more old but gold', () => {
+    it('7.1. Logged in user click on more old but gold post', () => {
+    cy.get(pageObject.moreoldbutgold).click();
+    cy.checkURL('sort=old');
+    cy.get(pageObject.moreOption).click();
+    cy.get(pageObject.oldbutgold).invoke('attr','class').should('include','title-sub-link active')
+    })
+   
+  })
+  describe('8. Logged in user is able to create post from homepage', () => {
+    it('8.1. Logged in user click on create post button', () => {
+    cy.get(pageObject.createPost).click();
+    cy.checkURL('bai-dang/viet-bai');
+    })
+   
+  })
+  describe('9. Logged in user is able to save/unsave a post', () => {
+    it('9.1. Logged in user save a post in monthly posts', () => {
+      cy.get(pageObject.postTitleonMonthTrending).eq(1).invoke('text').then(text => {
+        cy.wrap(text.replace('...', '').trim()).as('postTitle');
+        })
+      cy.get(pageObject.btnSaveinMonthPost).first().click()
+      cy.get(pageObject.savedPostIcon).should('be.visible')
+      cy.get(pageObject.toastMessage,{timeout:3000}).should('be.visible')
+      cy.get(pageObject.navbarUser).click()
+      cy.get(pageObject.savedPost).click()
+      cy.checkURL('?tab=savedPosts')
+      cy.get('@postTitle').then(postTitle => {
+        cy.get(userDetailObject.savedPostTitle).first().invoke('text').should('contain', postTitle);
+      })
+      cy.go('back');
+      cy.get(pageObject.btnSaveinMonthPost).first().click()
+      cy.get(pageObject.savedPostIcon).should('not.exist')
+      cy.get(pageObject.toastMessage,{timeout:3000}).should('be.visible')
+      cy.get(pageObject.navbarUser).click()
+      cy.get(pageObject.savedPost).click()
+      cy.checkURL('?tab=savedPosts')
+      cy.get(userDetailObject.main).compareSnapshotTest('9.1.No-saved-post',0.1)
+      
+    })
+    it.only('9.2. Logged in user save a post in popular posts', () => {
+      cy.get(pageObject.postTitleonForyou).first().invoke('text').then(text => {
+        cy.wrap(text.replace('...', '').trim()).as('postTitle');
+        })
+      cy.get(pageObject.btnSaveinMainContent).first().click({force: true})
+      cy.get(pageObject.savedPostIcon).should('be.visible')
+      cy.get(pageObject.toastMessage,{timeout:3000}).should('be.visible')
+      cy.get(pageObject.navbarUser).click()
+      cy.get(pageObject.savedPost).click()
+      cy.checkURL('?tab=savedPosts')
+      cy.get('@postTitle').then(postTitle => {
+        cy.get(userDetailObject.savedPostTitle).first().invoke('text').should('contain', postTitle);
+      })
+      cy.go('back');
+      cy.get(pageObject.btnSaveinMainContent).first().click({force: true})
+      cy.get(pageObject.savedPostIcon).should('not.exist')
+      cy.get(pageObject.toastMessage,{timeout:3000}).should('be.visible')
+      cy.get(pageObject.navbarUser).click()
+      cy.get(pageObject.savedPost).click()
+      cy.checkURL('?tab=savedPosts')
+      cy.get(userDetailObject.main).compareSnapshotTest('9.1.No-saved-post',0.1)
+      
+    })
   })

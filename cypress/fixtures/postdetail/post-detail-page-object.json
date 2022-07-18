@@ -1,4 +1,5 @@
 {
     "postTitle": ".auth-container > .title",
-    "top10": ".top-posts-heading"
+    "top10": ".top-posts-heading", 
+    "topAuthorsTitle": ".cover-typo > strong"
 }
